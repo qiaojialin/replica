@@ -2,6 +2,7 @@ package cn.edu.thu;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MDQuery {
@@ -9,18 +10,23 @@ public class MDQuery {
         List<String> replica1 = new ArrayList<String>();
         List<String> replica2 = new ArrayList<String>();
         List<String> replica3 = new ArrayList<String>();
-        for(int i = 1; i<= 3; i++) {
-            for(int j = 1; j <= 3; j++) {
-                for(int k = 1; k <= 3; k++) {
+        for(int i = 1; i<= 10; i++) {
+            for(int j = 1; j <= 10; j++) {
+                for(int k = 1; k <= 10; k++) {
                     replica1.add(i+","+j+","+k);
                     replica2.add(j+","+i+","+k);
                     replica3.add(k+","+j+","+i);
                 }
             }
         }
-        Collections.sort(replica1);
-        Collections.sort(replica2);
-        Collections.sort(replica3);
+        System.out.println(replica1);
+        System.out.println(replica2);
+        System.out.println(replica3);
+
+        System.out.println();
+        Collections.sort(replica1, new KeyComparator());
+        Collections.sort(replica2, new KeyComparator());
+        Collections.sort(replica3, new KeyComparator());
 
         System.out.println(replica1);
         System.out.println(replica2);
@@ -67,4 +73,20 @@ public class MDQuery {
         return cost;
     }
 
+}
+
+class KeyComparator implements Comparator<String> {
+
+    public int compare(String o1, String o2) {
+        String[] s1 = o1.split(",");
+        String[] s2 = o2.split(",");
+        for(int i = 0; i < s1.length; i++) {
+            if(Integer.valueOf(s1[i]) < Integer.valueOf(s2[i])) {
+                return -1;
+            } else if (Integer.valueOf(s1[i]) > Integer.valueOf(s2[i])) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 }

@@ -6,45 +6,52 @@ import java.util.List;
 
 public class MDQuery {
     public static void main(String[] args) {
-        List<Integer> replica1 = new ArrayList<Integer>();
-        List<Integer> replica2 = new ArrayList<Integer>();
-        List<Integer> replica3 = new ArrayList<Integer>();
-        for(int i = 0; i< 10; i++) {
-            for(int j = 0; j < 10; j++) {
-                for(int k = 0; k < 10; k++) {
-                    replica1.add(Integer.valueOf(i+""+j+""+k));
-                    replica2.add(Integer.valueOf(j+""+i+""+k));
-                    replica3.add(Integer.valueOf(k+""+j+""+i));
+        List<String> replica1 = new ArrayList<String>();
+        List<String> replica2 = new ArrayList<String>();
+        List<String> replica3 = new ArrayList<String>();
+        for(int i = 1; i<= 3; i++) {
+            for(int j = 1; j <= 3; j++) {
+                for(int k = 1; k <= 3; k++) {
+                    replica1.add(i+","+j+","+k);
+                    replica2.add(j+","+i+","+k);
+                    replica3.add(k+","+j+","+i);
                 }
             }
         }
         Collections.sort(replica1);
+        Collections.sort(replica2);
+        Collections.sort(replica3);
+
+        System.out.println(replica1);
+        System.out.println(replica2);
+        System.out.println(replica3);
 
         // 1<=i<=2
-        System.out.println(cost(query(replica1, 100, 299)));
-        System.out.println(cost(query(replica2, 100, 299)));
-        System.out.println(cost(query(replica3, 100, 299)));
+        System.out.println(cost(query(replica1, 0, "1", "2")));
+        System.out.println(cost(query(replica2, 1, "1", "2")));
+        System.out.println(cost(query(replica3, 2, "1", "2")));
         System.out.println();
 
         // 1<=i<=1
-        System.out.println(cost(query(replica1, 100, 199)));
-        System.out.println(cost(query(replica2, 100, 199)));
-        System.out.println(cost(query(replica3, 100, 199)));
+        System.out.println(cost(query(replica1, 0, "1", "1")));
+        System.out.println(cost(query(replica2, 1, "1", "1")));
+        System.out.println(cost(query(replica3, 2, "1", "1")));
         System.out.println();
 
-        // i=1,j=2,3<=c<=5
-        System.out.println(cost(query(replica1, 123, 125)));
-        System.out.println(cost(query(replica2, 123, 125)));
-        System.out.println(cost(query(replica3, 123, 125)));
+        // 3<=j<=5
+        System.out.println(cost(query(replica1, 1,"3", "5")));
+        System.out.println(cost(query(replica2, 0,"3", "5")));
+        System.out.println(cost(query(replica3, 1,"3", "5")));
         System.out.println();
 
     }
 
 
-    public static List<Integer> query(List<Integer> replica, int start, int end) {
+    public static List<Integer> query(List<String> replica, int i, String start, String end) {
         List<Integer> results = new ArrayList<Integer>();
-        for(int key: replica) {
-            if(key >= start && key <= end) {
+        for(String key: replica) {
+            String[] keys = key.split(",");
+            if(Integer.valueOf(keys[i]) >= Integer.valueOf(start) && Integer.valueOf(keys[i]) <= Integer.valueOf(end)) {
                 results.add(replica.indexOf(key));
             }
         }
